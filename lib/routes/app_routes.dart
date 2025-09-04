@@ -5,6 +5,7 @@ import '../presentation/onboarding_flow/onboarding_flow.dart';
 import '../presentation/theme_and_skill_selection/theme_and_skill_selection.dart';
 import '../presentation/component_selection_dashboard/component_selection_dashboard.dart';
 import '../presentation/component_database_browser/component_database_browser.dart';
+import '../presentation/ideas_library/ideas_library.dart';
 
 class AppRoutes {
   // TODO: Add your routes here
