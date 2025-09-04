@@ -387,7 +387,12 @@ class _AiIdeaGenerationState extends State<AiIdeaGeneration>
             ),
         ],
       ),
-      body: _buildBody(),
+      body: Column(
+        children: [
+          Expanded(child: _buildBody()),
+          const DevelopedByFooter(),
+        ],
+      ),
       floatingActionButton: _buildFloatingActionButton(),
     );
   }
