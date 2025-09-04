@@ -490,130 +490,143 @@ class _ComponentDatabaseBrowserState extends State<ComponentDatabaseBrowser> {
             onVoiceSearch: _onVoiceSearch,
             hintText: 'Search components...',
           ),
-          if (_searchQuery.isEmpty && !_isGridView) ...[
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _refreshComponents,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  padding: EdgeInsets.only(bottom: 10.h),
-                  itemCount: _categories.length + (_isLoading ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == _categories.length) {
-                      return Container(
-                        padding: EdgeInsets.all(4.w),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-
-                    final category = _categories[index];
-                    return ComponentCategoryCard(
-                      category: category,
-                      onTap: () => _onCategoryTap(category),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ] else ...[
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-              child: Row(
-                children: [
-                  if (_isGridView)
-                    TextButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          _isGridView = false;
-                          _selectedCategory = 'All Categories';
-                          _searchQuery = '';
-                          _searchController.clear();
-                        });
-                      },
-                      icon: CustomIconWidget(
-                        iconName: 'arrow_back',
-                        color: colorScheme.primary,
-                        size: 4.w,
-                      ),
-                      label: Text(
-                        'Back to Categories',
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  const Spacer(),
-                  Text(
-                    '${_filteredComponents.length} components found',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _refreshComponents,
-                child: _filteredComponents.isEmpty
-                    ? _buildEmptyState(theme, colorScheme)
-                    : GridView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.only(
-                          left: 2.w,
-                          right: 2.w,
-                          bottom: 15.h,
-                        ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 2.w,
-                          mainAxisSpacing: 2.w,
-                        ),
-                        itemCount:
-                            _filteredComponents.length + (_isLoading ? 2 : 0),
-                        itemBuilder: (context, index) {
-                          if (index >= _filteredComponents.length) {
-                            return Container(
-                              margin: EdgeInsets.all(2.w),
-                              decoration: BoxDecoration(
-                                color: colorScheme.surface,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: colorScheme.outline
-                                      .withValues(alpha: 0.2),
-                                ),
-                              ),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
-
-                          final component = _filteredComponents[index];
-                          return ComponentItemCard(
-                            component: component,
-                            isSelected:
-                                _selectedComponents.contains(component['id']),
-                            onAddToSelection: () => _toggleComponentSelection(
-                                component['id'] as String),
-                            onLearnMore: () => _showComponentDetail(component),
-                          );
-                        },
-                      ),
-              ),
-            ),
-          ],
+          Expanded(
+            child: _buildMainContent(),
+          ),
+          const DevelopedByFooter(),
         ],
       ),
-      bottomNavigationBar: SelectionBottomBar(
-        selectedCount: _selectedComponents.length,
-        onViewSelection: _onViewSelection,
-        onClearSelection: _clearSelection,
-      ),
+      bottomNavigationBar: null, // Remove the old bottom navigation bar since we have the footer
+    );
+  }
+
+  Widget _buildMainContent() {
+    return Column(
+      children: [
+        if (_searchQuery.isEmpty && !_isGridView) ...[
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _refreshComponents,
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: EdgeInsets.only(bottom: 5.h),
+                itemCount: _categories.length + (_isLoading ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == _categories.length) {
+                    return Container(
+                      padding: EdgeInsets.all(4.w),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
+                  final category = _categories[index];
+                  return ComponentCategoryCard(
+                    category: category,
+                    onTap: () => _onCategoryTap(category),
+                  );
+                },
+              ),
+            ),
+          ),
+        ] else ...[
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            child: Row(
+              children: [
+                if (_isGridView)
+                  TextButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        _isGridView = false;
+                        _selectedCategory = 'All Categories';
+                        _searchQuery = '';
+                        _searchController.clear();
+                      });
+                    },
+                    icon: CustomIconWidget(
+                      iconName: 'arrow_back',
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 4.w,
+                    ),
+                    label: Text(
+                      'Back to Categories',
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                const Spacer(),
+                Text(
+                  '${_filteredComponents.length} components found',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _refreshComponents,
+              child: _filteredComponents.isEmpty
+                  ? _buildEmptyState(Theme.of(context), Theme.of(context).colorScheme)
+                  : GridView.builder(
+                      controller: _scrollController,
+                      padding: EdgeInsets.only(
+                        left: 2.w,
+                        right: 2.w,
+                        bottom: 5.h,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.75,
+                        crossAxisSpacing: 2.w,
+                        mainAxisSpacing: 2.w,
+                      ),
+                      itemCount:
+                          _filteredComponents.length + (_isLoading ? 2 : 0),
+                      itemBuilder: (context, index) {
+                        if (index >= _filteredComponents.length) {
+                          return Container(
+                            margin: EdgeInsets.all(2.w),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.outline
+                                    .withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        final component = _filteredComponents[index];
+                        return ComponentItemCard(
+                          component: component,
+                          isSelected:
+                              _selectedComponents.contains(component['id']),
+                          onAddToSelection: () => _toggleComponentSelection(
+                              component['id'] as String),
+                          onLearnMore: () => _showComponentDetail(component),
+                        );
+                      },
+                    ),
+            ),
+          ),
+        ],
+        if (_selectedComponents.isNotEmpty)
+          SelectionBottomBar(
+            selectedCount: _selectedComponents.length,
+            onViewSelection: _onViewSelection,
+            onClearSelection: _clearSelection,
+          ),
+      ],
     );
   }
 
