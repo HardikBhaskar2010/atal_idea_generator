@@ -355,13 +355,20 @@ class _ComponentSelectionDashboardState
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          _buildComponentsTab(),
-          _buildGenerateTab(),
-          _buildLibraryTab(),
-          _buildProfileTab(),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildComponentsTab(),
+                _buildGenerateTab(),
+                _buildLibraryTab(),
+                _buildProfileTab(),
+              ],
+            ),
+          ),
+          const DevelopedByFooter(),
         ],
       ),
       floatingActionButton: _selectedComponents.length >= 3
