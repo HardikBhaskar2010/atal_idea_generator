@@ -259,6 +259,9 @@ class _ThemeAndSkillSelectionState extends State<ThemeAndSkillSelection>
 
               // Generate Ideas Button
               _buildGenerateButton(context),
+
+              // Developed By Footer
+              const DevelopedByFooter(),
             ],
           ),
         ),
