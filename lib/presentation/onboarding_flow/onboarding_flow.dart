@@ -179,6 +179,9 @@ class _OnboardingFlowState extends State<OnboardingFlow>
             ),
 
             SizedBox(height: 2.h),
+
+            // Developed By Footer
+            const DevelopedByFooter(),
           ],
         ),
       ),
