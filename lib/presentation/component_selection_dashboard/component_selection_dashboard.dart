@@ -674,25 +674,8 @@ class _ComponentSelectionDashboardState
         description:
             'Save and organize your favorite project ideas for future reference.',
         iconName: 'library_books',
-        actionText: 'Explore Library',
-        onActionTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  CustomIconWidget(
-                    iconName: 'construction',
-                    color: Colors.white,
-                    size: 5.w,
-                  ),
-                  SizedBox(width: 2.w),
-                  const Text('Library feature coming soon'),
-                ],
-              ),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ),
-          );
-        },
+        actionText: 'Open Library',
+        onActionTap: () => Navigator.pushNamed(context, '/ideas-library'),
       ),
     );
   }
