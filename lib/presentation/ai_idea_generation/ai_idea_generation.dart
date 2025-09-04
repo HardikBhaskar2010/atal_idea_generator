@@ -21,6 +21,7 @@ class _AiIdeaGenerationState extends State<AiIdeaGeneration>
   bool _hasError = false;
   List<Map<String, dynamic>> _generatedProjects = [];
   Set<String> _savedProjects = {};
+  final DatabaseService _databaseService = DatabaseService();
 
   late AnimationController _fabController;
   late Animation<double> _fabAnimation;
