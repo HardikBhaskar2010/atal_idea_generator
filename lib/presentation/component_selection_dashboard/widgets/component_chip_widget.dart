@@ -30,98 +30,216 @@ class ComponentChipWidget extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      margin: EdgeInsets.only(right: 2.w),
+      margin: EdgeInsets.only(right: 3.w),
+      width: 40.w,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            colorScheme.primaryContainer.withValues(alpha: 0.8),
+            colorScheme.secondaryContainer.withValues(alpha: 0.6),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: colorScheme.outline.withValues(alpha: 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Material(
-        color: colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.transparent,
         child: InkWell(
           onLongPress: onRemove,
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-            child: Row(
+          borderRadius: BorderRadius.circular(16),
+          splashColor: colorScheme.primary.withValues(alpha: 0.1),
+          child: Padding(
+            padding: EdgeInsets.all(3.w),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 6.w,
-                  height: 6.w,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primary.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: CustomIconWidget(
-                      iconName: categoryIcon,
-                      color: colorScheme.primary,
-                      size: 3.w,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 2.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                // Header with icon and remove button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      name,
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: colorScheme.onPrimaryContainer,
+                    Container(
+                      padding: EdgeInsets.all(2.w),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            colorScheme.primary.withValues(alpha: 0.2),
+                            colorScheme.secondary.withValues(alpha: 0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: colorScheme.primary.withValues(alpha: 0.3),
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      child: CustomIconWidget(
+                        iconName: categoryIcon,
+                        color: colorScheme.primary,
+                        size: 5.w,
+                      ),
                     ),
-                    Text(
-                      category,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onPrimaryContainer
-                            .withValues(alpha: 0.7),
+                    GestureDetector(
+                      onTap: onRemove,
+                      child: Container(
+                        padding: EdgeInsets.all(1.5.w),
+                        decoration: BoxDecoration(
+                          color: colorScheme.error.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: colorScheme.error.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: CustomIconWidget(
+                          iconName: 'close',
+                          color: colorScheme.error,
+                          size: 3.5.w,
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-                SizedBox(width: 2.w),
+                SizedBox(height: 2.h),
+
+                // Component name and category
+                Text(
+                  name,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onPrimaryContainer,
+                    letterSpacing: 0.5,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 0.5.h),
+                Row(
+                  children: [
+                    CustomIconWidget(
+                      iconName: 'category',
+                      color:
+                          colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                      size: 3.w,
+                    ),
+                    SizedBox(width: 1.w),
+                    Expanded(
+                      child: Text(
+                        category,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onPrimaryContainer
+                              .withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 2.h),
+
+                // Enhanced Quantity controls
                 Container(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.5.h),
+                      EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
                   decoration: BoxDecoration(
-                    color: colorScheme.primary,
+                    color: colorScheme.surface.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: colorScheme.outline.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (onQuantityDecrease != null) ...[
+                      if (onQuantityDecrease != null)
                         GestureDetector(
                           onTap: onQuantityDecrease,
-                          child: CustomIconWidget(
-                            iconName: 'remove',
-                            color: colorScheme.onPrimary,
-                            size: 3.w,
+                          child: Container(
+                            padding: EdgeInsets.all(1.5.w),
+                            decoration: BoxDecoration(
+                              color: colorScheme.error.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: colorScheme.error.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: CustomIconWidget(
+                              iconName: 'remove',
+                              color: colorScheme.error,
+                              size: 3.w,
+                            ),
                           ),
                         ),
-                        SizedBox(width: 1.w),
-                      ],
-                      Text(
-                        quantity.toString(),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: colorScheme.onPrimary,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.w, vertical: 1.h),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                colorScheme.primary.withValues(alpha: 0.1),
+                                colorScheme.secondary.withValues(alpha: 0.1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomIconWidget(
+                                iconName: 'inventory',
+                                color: colorScheme.primary,
+                                size: 3.w,
+                              ),
+                              SizedBox(width: 1.w),
+                              Text(
+                                quantity.toString(),
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      if (onQuantityIncrease != null) ...[
-                        SizedBox(width: 1.w),
+                      if (onQuantityIncrease != null)
                         GestureDetector(
                           onTap: onQuantityIncrease,
-                          child: CustomIconWidget(
-                            iconName: 'add',
-                            color: colorScheme.onPrimary,
-                            size: 3.w,
+                          child: Container(
+                            padding: EdgeInsets.all(1.5.w),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  colorScheme.primary.withValues(alpha: 0.2),
+                                  colorScheme.secondary.withValues(alpha: 0.1),
+                                ],
+                              ),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color:
+                                    colorScheme.primary.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: CustomIconWidget(
+                              iconName: 'add',
+                              color: colorScheme.primary,
+                              size: 3.w,
+                            ),
                           ),
                         ),
-                      ],
                     ],
                   ),
                 ),

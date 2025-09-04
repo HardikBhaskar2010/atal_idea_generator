@@ -26,41 +26,69 @@ class FilterChipWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(right: 2.w),
       child: Material(
-        color: isSelected ? colorScheme.primary : colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        elevation: isSelected ? 2 : 0,
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          borderRadius: BorderRadius.circular(20),
+          splashColor: colorScheme.primary.withValues(alpha: 0.1),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: isSelected
-                  ? null
-                  : Border.all(
-                      color: colorScheme.outline.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
+              gradient: isSelected
+                  ? LinearGradient(
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.secondary,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                  : null,
+              color: isSelected ? null : colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected
+                    ? Colors.transparent
+                    : colorScheme.outline.withValues(alpha: 0.2),
+                width: isSelected ? 0 : 1,
+              ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomIconWidget(
-                  iconName: iconName,
-                  color: isSelected
-                      ? colorScheme.onPrimary
-                      : colorScheme.onSurfaceVariant,
-                  size: 4.w,
+                Container(
+                  padding: EdgeInsets.all(0.5.w),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Colors.white.withValues(alpha: 0.2)
+                        : colorScheme.primary.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: CustomIconWidget(
+                    iconName: iconName,
+                    color: isSelected ? Colors.white : colorScheme.primary,
+                    size: 4.w,
+                  ),
                 ),
-                SizedBox(width: 1.5.w),
+                SizedBox(width: 2.w),
                 Text(
                   label,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? colorScheme.onPrimary
+                        ? Colors.white
                         : colorScheme.onSurfaceVariant,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],
