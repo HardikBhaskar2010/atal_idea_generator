@@ -330,45 +330,26 @@ class _ComponentSelectionDashboardState
           unselectedLabelStyle: theme.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w400,
           ),
-          tabs: [
+          onTap: (index) {
+            setState(() {
+              // This will trigger a rebuild and update the icons
+            });
+          },
+          tabs: const [
             Tab(
-              icon: CustomIconWidget(
-                iconName: 'inventory_2',
-                color: _tabController.index == 0
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-                size: 4.w,
-              ),
+              icon: Icon(Icons.inventory_2),
               text: 'Components',
             ),
             Tab(
-              icon: CustomIconWidget(
-                iconName: 'auto_awesome',
-                color: _tabController.index == 1
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-                size: 4.w,
-              ),
+              icon: Icon(Icons.auto_awesome),
               text: 'Generate',
             ),
             Tab(
-              icon: CustomIconWidget(
-                iconName: 'library_books',
-                color: _tabController.index == 2
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-                size: 4.w,
-              ),
+              icon: Icon(Icons.library_books),
               text: 'Library',
             ),
             Tab(
-              icon: CustomIconWidget(
-                iconName: 'account_circle',
-                color: _tabController.index == 3
-                    ? colorScheme.primary
-                    : colorScheme.onSurfaceVariant,
-                size: 4.w,
-              ),
+              icon: Icon(Icons.account_circle),
               text: 'Profile',
             ),
           ],
