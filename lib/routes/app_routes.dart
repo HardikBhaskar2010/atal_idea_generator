@@ -28,6 +28,7 @@ class AppRoutes {
     componentSelectionDashboard: (context) =>
         const ComponentSelectionDashboard(),
     componentDatabaseBrowser: (context) => const ComponentDatabaseBrowser(),
+    ideasLibrary: (context) => const IdeasLibrary(),
     // TODO: Add your other routes here
   };
 }
