@@ -737,6 +737,9 @@ class _UserProfileState extends State<UserProfile>
               ],
             ),
           ),
+
+          // Developed By Footer
+          const DevelopedByFooter(),
         ],
       ),
     );
