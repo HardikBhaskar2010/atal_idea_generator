@@ -17,6 +17,7 @@ class AppRoutes {
   static const String componentSelectionDashboard =
       '/component-selection-dashboard';
   static const String componentDatabaseBrowser = '/component-database-browser';
+  static const String ideasLibrary = '/ideas-library';
 
   static Map<String, WidgetBuilder> routes = {
     initial: (context) => const OnboardingFlow(),
