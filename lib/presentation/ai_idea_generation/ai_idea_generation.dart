@@ -266,10 +266,63 @@ class _AiIdeaGenerationState extends State<AiIdeaGeneration>
     setState(() {
       if (_savedProjects.contains(projectId)) {
         _savedProjects.remove(projectId);
+        _removeIdeaFromDatabase(projectId);
       } else {
         _savedProjects.add(projectId);
+        _saveIdeaToDatabase(projectId);
       }
     });
+  }
+
+  Future<void> _saveIdeaToDatabase(String projectId) async {
+    try {
+      final project = _generatedProjects.firstWhere((p) => p['id'] == projectId);
+      final savedIdea = SavedIdea(
+        id: project['id'],
+        title: project['title'],
+        description: project['description'],
+        problemStatement: project['problemStatement'],
+        workingPrinciple: project['workingPrinciple'],
+        difficulty: project['difficulty'],
+        estimatedCost: project['estimatedCost'],
+        components: List<String>.from(project['components']),
+        innovationElements: List<String>.from(project['innovationElements']),
+        scalabilityOptions: List<String>.from(project['scalabilityOptions']),
+        availability: project['availability'],
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
+      await _databaseService.saveIdea(savedIdea);
+      await _databaseService.incrementStat('ideasGenerated');
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Saved "${project['title']}" to your library'),
+          action: SnackBarAction(
+            label: 'View Library',
+            onPressed: () => Navigator.pushNamed(context, '/ideas-library'),
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving idea: $e')),
+      );
+    }
+  }
+
+  Future<void> _removeIdeaFromDatabase(String projectId) async {
+    try {
+      await _databaseService.deleteIdea(projectId);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Removed from your library')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error removing idea: $e')),
+      );
+    }
   }
 
   void _shareProject(Map<String, dynamic> project) {
