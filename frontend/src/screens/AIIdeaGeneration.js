@@ -399,130 +399,121 @@ const AIIdeaGeneration = () => {
         )}
       </div>
 
-      {/* Idea Detail Modal */}
-      <AnimatePresence>
+      {/* Enhanced Idea Detail Modal */}
+      <EnhancedModal
+        isOpen={!!selectedIdea}
+        onClose={() => setSelectedIdea(null)}
+        size="lg"
+        animation="scale"
+        closeOnBackdrop={true}
+        closeOnEscape={true}
+      >
         {selectedIdea && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-            >
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                      {selectedIdea.title}
-                    </h2>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(selectedIdea.difficulty)}`}>
-                        {selectedIdea.difficulty}
-                      </span>
-                      <span className="text-sm font-medium text-primary">
-                        {selectedIdea.estimated_cost}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <button
-                    onClick={() => setSelectedIdea(null)}
-                    className="text-gray-400 hover:text-gray-600 text-2xl"
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      Problem Statement
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {selectedIdea.problem_statement}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      Working Principle
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {selectedIdea.working_principle}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      Required Components
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {selectedIdea.components?.map((component, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-                        >
-                          {component}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {selectedIdea.innovation_elements && selectedIdea.innovation_elements.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                        Innovation Elements
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
-                        {selectedIdea.innovation_elements.map((element, index) => (
-                          <li key={index}>{element}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {selectedIdea.scalability_options && selectedIdea.scalability_options.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                        Scalability Options
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
-                        {selectedIdea.scalability_options.map((option, index) => (
-                          <li key={index}>{option}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-gray-600">
-                    <button
-                      onClick={() => {
-                        handleSaveIdea(selectedIdea);
-                        setSelectedIdea(null);
-                      }}
-                      disabled={savedIdeas.has(selectedIdea.id)}
-                      className={`btn-primary flex items-center space-x-2 ${
-                        savedIdeas.has(selectedIdea.id) ? 'bg-green-500 hover:bg-green-600' : ''
-                      }`}
-                    >
-                      <Heart className={`h-4 w-4 ${savedIdeas.has(selectedIdea.id) ? 'fill-current' : ''}`} />
-                      <span>{savedIdeas.has(selectedIdea.id) ? 'Saved' : 'Save Idea'}</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => handleShareIdea(selectedIdea)}
-                      className="btn-outline flex items-center space-x-2"
-                    >
-                      <Share2 className="h-4 w-4" />
-                      <span>Share</span>
-                    </button>
-                  </div>
+          <div className="p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  {selectedIdea.title}
+                </h2>
+                <div className="flex items-center space-x-2 mb-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(selectedIdea.difficulty)}`}>
+                    {selectedIdea.difficulty}
+                  </span>
+                  <span className="text-sm font-medium text-primary">
+                    {selectedIdea.estimated_cost}
+                  </span>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  Problem Statement
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {selectedIdea.problem_statement}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  Working Principle
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {selectedIdea.working_principle}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  Required Components
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {selectedIdea.components?.map((component, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300"
+                    >
+                      {component}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {selectedIdea.innovation_elements && selectedIdea.innovation_elements.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Innovation Elements
+                  </h3>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
+                    {selectedIdea.innovation_elements.map((element, index) => (
+                      <li key={index}>{element}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selectedIdea.scalability_options && selectedIdea.scalability_options.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Scalability Options
+                  </h3>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
+                    {selectedIdea.scalability_options.map((option, index) => (
+                      <li key={index}>{option}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex items-center space-x-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+                <button
+                  onClick={() => {
+                    handleSaveIdea(selectedIdea);
+                    setSelectedIdea(null);
+                  }}
+                  disabled={savedIdeas.has(selectedIdea.id)}
+                  className={`btn-primary flex items-center space-x-2 ${
+                    savedIdeas.has(selectedIdea.id) ? 'bg-green-500 hover:bg-green-600' : ''
+                  }`}
+                >
+                  <Heart className={`h-4 w-4 ${savedIdeas.has(selectedIdea.id) ? 'fill-current' : ''}`} />
+                  <span>{savedIdeas.has(selectedIdea.id) ? 'Saved' : 'Save Idea'}</span>
+                </button>
+                
+                <button
+                  onClick={() => handleShareIdea(selectedIdea)}
+                  className="btn-outline flex items-center space-x-2"
+                >
+                  <Share2 className="h-4 w-4" />
+                  <span>Share</span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
+      </EnhancedModal>
 
       <DevelopedByFooter />
     </div>
