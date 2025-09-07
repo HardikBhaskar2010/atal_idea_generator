@@ -78,7 +78,11 @@ const ComponentSelectionDashboard = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-surface-light dark:bg-surface-dark flex items-center justify-center">
-        <LoadingSpinner size="lg" text="Loading components..." />
+        <AdvancedLoadingSpinner 
+          size="lg" 
+          text="Loading components..." 
+          variant="ripple"
+        />
       </div>
     );
   }
