@@ -95,6 +95,146 @@ class IdeaGenerationRequest(BaseModel):
 async def get_collection(collection_name: str):
     return db[collection_name]
 
+# Intelligent idea generation function
+async def generate_intelligent_ideas(request: IdeaGenerationRequest):
+    """Generate project ideas using intelligent rule-based system"""
+    
+    # Base project templates with component mappings
+    project_templates = [
+        {
+            "title": "Smart Plant Watering System",
+            "description": "An automated irrigation system that monitors soil moisture and waters plants when needed using Arduino and sensors.",
+            "problem_statement": "Many people struggle to maintain proper watering schedules for their plants, leading to over-watering or under-watering, which can harm plant health.",
+            "working_principle": "The system uses a soil moisture sensor to detect when the soil becomes dry. When moisture levels drop below a threshold, the Arduino triggers a water pump to irrigate the plant.",
+            "difficulty": "Beginner",
+            "estimated_cost": "₹850",
+            "required_components": ["Arduino Uno", "Soil Moisture Sensor", "Water Pump", "LCD Display", "Relay Module"],
+            "innovation_elements": ["Automatic threshold adjustment", "SMS notifications", "Solar panel integration"],
+            "scalability_options": ["Multiple plant monitoring", "IoT connectivity", "Weather API integration"],
+            "tags": ["Agriculture", "IoT", "Automation"],
+            "theme": "Agriculture"
+        },
+        {
+            "title": "Air Quality Monitor with Alert System",
+            "description": "A comprehensive air quality monitoring device that measures PM2.5, CO2, and temperature, providing real-time alerts for poor air quality.",
+            "problem_statement": "Indoor air pollution is a growing concern, especially in urban areas. People need an affordable way to monitor air quality in their homes and workplaces.",
+            "working_principle": "Multiple sensors collect data on air quality parameters. The microcontroller processes this data and displays it on an OLED screen. When pollution levels exceed safe thresholds, the system triggers visual and audio alerts.",
+            "difficulty": "Intermediate",
+            "estimated_cost": "₹1,250",
+            "required_components": ["ESP32", "PM2.5 Sensor", "CO2 Sensor", "DHT22 Temperature Sensor", "OLED Display", "Buzzer"],
+            "innovation_elements": ["Machine learning predictions", "Smart home integration", "Historical data logging"],
+            "scalability_options": ["Community air quality mapping", "Government database integration", "Mobile app with health recommendations"],
+            "tags": ["Environment", "Health", "IoT"],
+            "theme": "Environment"
+        },
+        {
+            "title": "Smart Traffic Light Controller",
+            "description": "An intelligent traffic management system that adjusts signal timing based on real-time traffic density using computer vision and sensors.",
+            "problem_statement": "Traditional traffic lights operate on fixed timers, causing unnecessary delays and fuel consumption when traffic patterns vary throughout the day.",
+            "working_principle": "Camera modules and ultrasonic sensors detect vehicle density at intersections. An AI algorithm processes this data to optimize signal timing, reducing wait times and improving traffic flow efficiency.",
+            "difficulty": "Advanced",
+            "estimated_cost": "₹2,100",
+            "required_components": ["Raspberry Pi 4", "Camera Module", "Ultrasonic Sensors", "Servo Motors", "LED Traffic Lights"],
+            "innovation_elements": ["Emergency vehicle priority detection", "Pedestrian crossing integration", "Weather-adaptive timing"],
+            "scalability_options": ["City-wide traffic optimization", "GPS navigation integration", "Public transportation priority"],
+            "tags": ["Transportation", "AI", "Smart City"],
+            "theme": "Transportation"
+        },
+        {
+            "title": "Waste Segregation Robot",
+            "description": "An automated waste sorting system that uses computer vision to identify and separate recyclable materials from general waste.",
+            "problem_statement": "Improper waste segregation leads to environmental pollution and makes recycling processes inefficient. Manual sorting is time-consuming and often inaccurate.",
+            "working_principle": "A camera captures images of waste items on a conveyor belt. Machine learning algorithms classify materials as plastic, metal, paper, or organic waste. Robotic arms then sort items into appropriate bins.",
+            "difficulty": "Advanced",
+            "estimated_cost": "₹3,500",
+            "required_components": ["Raspberry Pi 4", "Camera Module", "Servo Motors", "Conveyor Belt", "Ultrasonic Sensors", "Robotic Arm Kit"],
+            "innovation_elements": ["Multi-spectral imaging", "Self-learning algorithm", "Waste management tracking integration"],
+            "scalability_options": ["Industrial-scale processing", "Household sorting units", "Smart city integration"],
+            "tags": ["Environment", "Robotics", "AI"],
+            "theme": "Environment"
+        },
+        {
+            "title": "Smart Health Monitoring Wearable",
+            "description": "A wearable device that continuously monitors vital signs including heart rate, body temperature, and activity levels with emergency alert features.",
+            "problem_statement": "Early detection of health issues is crucial, especially for elderly people living alone. Traditional monitoring requires frequent hospital visits and is not continuous.",
+            "working_principle": "Wearable sensors collect biometric data continuously. The device processes this information to detect anomalies and can send emergency alerts to family members or healthcare providers when critical thresholds are exceeded.",
+            "difficulty": "Intermediate",
+            "estimated_cost": "₹1,800",
+            "required_components": ["ESP32", "Heart Rate Sensor", "Temperature Sensor", "Accelerometer", "OLED Display", "Bluetooth Module"],
+            "innovation_elements": ["AI-powered health trend analysis", "Telemedicine integration", "Medication reminder system"],
+            "scalability_options": ["Hospital patient monitoring", "Insurance health tracking", "Elderly care facility integration"],
+            "tags": ["Healthcare", "IoT", "Wearables"],
+            "theme": "Healthcare"
+        }
+    ]
+    
+    # Filter projects based on available components
+    selected_components = set(request.selected_components)
+    matching_projects = []
+    
+    for template in project_templates:
+        # Calculate component match score
+        required_components = set(template["required_components"])
+        match_score = len(selected_components.intersection(required_components)) / len(required_components)
+        
+        # Include projects with at least 30% component match
+        if match_score >= 0.3:
+            # Create project instance
+            project = {
+                "id": str(uuid.uuid4()),
+                "title": template["title"],
+                "description": template["description"],
+                "problem_statement": template["problem_statement"],
+                "working_principle": template["working_principle"],
+                "difficulty": template["difficulty"],
+                "estimated_cost": template["estimated_cost"],
+                "components": template["required_components"],
+                "innovation_elements": template["innovation_elements"],
+                "scalability_options": template["scalability_options"],
+                "availability": "Available" if match_score >= 0.7 else "Partially Available",
+                "created_at": datetime.now(),
+                "updated_at": datetime.now(),
+                "is_favorite": False,
+                "tags": template["tags"],
+                "notes": "",
+                "match_score": match_score
+            }
+            matching_projects.append(project)
+    
+    # Sort by match score and user preferences
+    if request.user_preferences:
+        # Adjust scoring based on difficulty preference
+        for project in matching_projects:
+            if project["difficulty"] == request.user_preferences.skill_level:
+                project["match_score"] += 0.2
+    
+    # Sort by match score (descending) and return top results
+    matching_projects.sort(key=lambda x: x["match_score"], reverse=True)
+    
+    # Return requested number of projects (default 5)
+    result_count = min(request.count, len(matching_projects))
+    return matching_projects[:result_count] if matching_projects else [
+        # Fallback project if no matches found
+        {
+            "id": str(uuid.uuid4()),
+            "title": "Custom Component Project",
+            "description": "A flexible project that can be adapted to use your selected components for learning and experimentation.",
+            "problem_statement": "Learning electronics and programming requires hands-on experience with available components.",
+            "working_principle": "Use your selected components to build a basic circuit and program it to perform simple tasks like LED control, sensor reading, or data display.",
+            "difficulty": "Beginner",
+            "estimated_cost": "₹500",
+            "components": request.selected_components,
+            "innovation_elements": ["Modular design", "Educational focus", "Expandable functionality"],
+            "scalability_options": ["Add more sensors", "Implement wireless communication", "Create user interface"],
+            "availability": "Available",
+            "created_at": datetime.now(),
+            "updated_at": datetime.now(),
+            "is_favorite": False,
+            "tags": ["Education", "Basic Electronics"],
+            "notes": ""
+        }
+    ]
+
 # API Routes
 
 @app.get("/")
