@@ -204,60 +204,96 @@ const ComponentSelectionDashboard = () => {
               const CategoryIcon = getCategoryIcon(component.category);
               
               return (
-                <motion.div
+                <AnimatedCard
                   key={component.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`card p-6 cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                    isSelected ? 'ring-2 ring-primary bg-primary/5' : 'hover:shadow-md'
+                  hover3D={true}
+                  clickAnimation={true}
+                  glowEffect={isSelected}
+                  className={`p-6 cursor-pointer transition-all duration-200 ${
+                    isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
                   }`}
                   onClick={() => toggleComponentSelection(component)}
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`p-2 rounded-lg ${isSelected ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700'}`}>
-                      <CategoryIcon className="h-6 w-6" />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <motion.div 
+                        className={`p-3 rounded-lg transition-all duration-300 ${
+                          isSelected 
+                            ? 'bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg' 
+                            : 'bg-gray-100 dark:bg-gray-700'
+                        }`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <CategoryIcon className="h-6 w-6" />
+                      </motion.div>
+                      
+                      <motion.span 
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                          component.availability === 'Available'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
+                            : component.availability === 'Partially Available'
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
+                            : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {component.availability}
+                      </motion.span>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      component.availability === 'Available'
-                        ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-                        : component.availability === 'Partially Available'
-                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
-                        : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-                    }`}>
-                      {component.availability}
-                    </span>
-                  </div>
-                  
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    {component.name}
-                  </h3>
-                  
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                    {component.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-primary">
-                      {component.price_range}
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {component.category}
-                    </span>
-                  </div>
-                  
-                  {isSelected && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="mt-3 text-center"
+                    
+                    <motion.h3 
+                      className="font-semibold text-gray-900 dark:text-white mb-2"
+                      layoutId={`title-${component.id}`}
                     >
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary text-white">
-                        ✓ Selected
+                      {component.name}
+                    </motion.h3>
+                    
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                      {component.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <motion.span 
+                        className="text-sm font-medium text-primary"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {component.price_range}
+                      </motion.span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {component.category}
                       </span>
-                    </motion.div>
-                  )}
-                </motion.div>
+                    </div>
+                    
+                    {isSelected && (
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        className="mt-4 text-center"
+                      >
+                        <motion.span 
+                          className="inline-flex items-center px-3 py-2 rounded-full text-xs font-medium bg-gradient-to-r from-primary to-secondary text-white shadow-lg"
+                          animate={{ 
+                            boxShadow: [
+                              "0 4px 14px 0 rgba(46, 125, 50, 0.3)",
+                              "0 6px 20px 0 rgba(46, 125, 50, 0.5)",
+                              "0 4px 14px 0 rgba(46, 125, 50, 0.3)"
+                            ]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          ✓ Selected
+                        </motion.span>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </AnimatedCard>
               );
             })}
           </div>
