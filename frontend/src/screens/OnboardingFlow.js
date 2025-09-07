@@ -83,12 +83,20 @@ const OnboardingFlow = () => {
 
   const nextPage = () => {
     if (currentPage < onboardingData.length - 1) {
-      setCurrentPage(currentPage + 1);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentPage(currentPage + 1);
+        setIsAnimating(false);
+      }, 150);
     }
   };
 
   const skipOnboarding = () => {
-    setCurrentPage(onboardingData.length - 1);
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentPage(onboardingData.length - 1);
+      setIsAnimating(false);
+    }, 150);
   };
 
   const completeOnboarding = () => {
