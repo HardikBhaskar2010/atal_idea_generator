@@ -269,84 +269,109 @@ const AIIdeaGeneration = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {generatedIdeas.map((idea, index) => (
-                <motion.div
+                <AnimatedCard
                   key={idea.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="card p-6 hover:shadow-lg transition-all duration-200"
+                  hover3D={true}
+                  clickAnimation={true}
+                  glowEffect={false}
+                  className="p-6 hover:shadow-lg transition-all duration-200"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {idea.title}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-                        {idea.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-2 mb-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(idea.difficulty)}`}>
-                      {idea.difficulty}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getAvailabilityColor(idea.availability)}`}>
-                      {idea.availability}
-                    </span>
-                    <span className="text-sm font-medium text-primary">
-                      {idea.estimated_cost}
-                    </span>
-                  </div>
-
-                  <div className="mb-4">
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
-                      Required Components:
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {idea.components?.slice(0, 3).map((component, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400"
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <motion.h3 
+                          className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+                          layoutId={`idea-title-${idea.id}`}
                         >
-                          {component}
-                        </span>
-                      ))}
-                      {idea.components?.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400">
-                          +{idea.components.length - 3} more
-                        </span>
-                      )}
+                          {idea.title}
+                        </motion.h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                          {idea.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => setSelectedIdea(idea)}
-                      className="flex-1 btn-outline text-sm py-2 flex items-center justify-center space-x-1"
-                    >
-                      <Eye className="h-3 w-3" />
-                      <span>View Details</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => handleSaveIdea(idea)}
-                      disabled={savedIdeas.has(idea.id) || saveIdeaMutation.isLoading}
-                      className={`btn-primary text-sm py-2 px-3 ${
-                        savedIdeas.has(idea.id) ? 'bg-green-500 hover:bg-green-600' : ''
-                      }`}
-                    >
-                      <Heart className={`h-3 w-3 ${savedIdeas.has(idea.id) ? 'fill-current' : ''}`} />
-                    </button>
-                    
-                    <button
-                      onClick={() => handleShareIdea(idea)}
-                      className="btn-outline text-sm py-2 px-3"
-                    >
-                      <Share2 className="h-3 w-3" />
-                    </button>
-                  </div>
-                </motion.div>
+                    <div className="flex items-center space-x-2 mb-4">
+                      <motion.span 
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(idea.difficulty)}`}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {idea.difficulty}
+                      </motion.span>
+                      <motion.span 
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getAvailabilityColor(idea.availability)}`}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {idea.availability}
+                      </motion.span>
+                      <motion.span 
+                        className="text-sm font-medium text-primary"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {idea.estimated_cost}
+                      </motion.span>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="font-medium text-gray-900 dark:text-white mb-2 text-sm">
+                        Required Components:
+                      </h4>
+                      <div className="flex flex-wrap gap-1">
+                        {idea.components?.slice(0, 3).map((component, idx) => (
+                          <motion.span
+                            key={idx}
+                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400"
+                            whileHover={{ scale: 1.05, backgroundColor: 'rgba(46, 125, 50, 0.1)' }}
+                          >
+                            {component}
+                          </motion.span>
+                        ))}
+                        {idea.components?.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-400">
+                            +{idea.components.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setSelectedIdea(idea)}
+                        className="flex-1 btn-outline text-sm py-2 flex items-center justify-center space-x-1"
+                      >
+                        <Eye className="h-3 w-3" />
+                        <span>View Details</span>
+                      </motion.button>
+                      
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handleSaveIdea(idea)}
+                        disabled={savedIdeas.has(idea.id) || saveIdeaMutation.isLoading}
+                        className={`btn-primary text-sm py-2 px-3 ${
+                          savedIdeas.has(idea.id) ? 'bg-green-500 hover:bg-green-600' : ''
+                        }`}
+                      >
+                        <Heart className={`h-3 w-3 ${savedIdeas.has(idea.id) ? 'fill-current' : ''}`} />
+                      </motion.button>
+                      
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handleShareIdea(idea)}
+                        className="btn-outline text-sm py-2 px-3"
+                      >
+                        <Share2 className="h-3 w-3" />
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                </AnimatedCard>
               ))}
             </div>
           </div>
