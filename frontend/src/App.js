@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 
 // Import all screens
 import OnboardingFlow from './screens/OnboardingFlow';
@@ -14,6 +13,9 @@ import UserProfile from './screens/UserProfile';
 // Context Providers
 import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider } from './contexts/UserContext';
+
+// Enhanced components
+import EnhancedToastProvider from './components/common/EnhancedToastProvider';
 
 function App() {
   return (
