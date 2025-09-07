@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { apiService } from '../services/apiService';
 import { useUser } from '../contexts/UserContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import AdvancedLoadingSpinner from '../components/common/AdvancedLoadingSpinner';
+import AnimatedCard from '../components/common/AnimatedCard';
 import DevelopedByFooter from '../components/common/DevelopedByFooter';
 
 const ComponentSelectionDashboard = () => {
