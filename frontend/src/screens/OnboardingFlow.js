@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QrCode, Brain, FolderHeart, ChevronRight, SkipForward } from 'lucide-react';
+import { useSpring, animated, config } from '@react-spring/web';
+import { QrCode, Brain, FolderHeart, ChevronRight, SkipForward, Sparkles } from 'lucide-react';
 import DevelopedByFooter from '../components/common/DevelopedByFooter';
+import ParticleBackground from '../components/common/ParticleBackground';
 
 const OnboardingFlow = () => {
   const navigate = useNavigate();
