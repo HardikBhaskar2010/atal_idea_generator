@@ -1,6 +1,6 @@
 import React from 'react';
 import { animated, useTransition, useSpring, config } from '@react-spring/web';
-import { useGesture } from 'react-use-gesture';
+import { useGesture } from '@use-gesture/react';
 
 const EnhancedModal = ({ 
   isOpen, 
