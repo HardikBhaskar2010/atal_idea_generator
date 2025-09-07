@@ -36,7 +36,7 @@ const AnimatedCard = ({
 
   // Gesture handlers for 3D hover effect
   const bind = useGesture({
-    onMove: ({ xy, hovering }) => {
+    onMove: ({ xy, hovering, event }) => {
       if (!hover3D || !hovering) return;
       
       const rect = event.target.getBoundingClientRect();
