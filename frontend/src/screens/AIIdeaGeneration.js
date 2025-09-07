@@ -160,7 +160,10 @@ const AIIdeaGeneration = () => {
         {/* Loading State */}
         {generateIdeasMutation.isLoading && (
           <div className="flex flex-col items-center justify-center py-16">
-            <LoadingSpinner size="lg" />
+            <AdvancedLoadingSpinner 
+              size="xl" 
+              variant="pulse"
+            />
             <div className="mt-8 text-center">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                 Generating Ideas...
@@ -170,31 +173,37 @@ const AIIdeaGeneration = () => {
               </p>
             </div>
             
-            {/* Loading Messages */}
+            {/* Enhanced Loading Messages */}
             <div className="mt-6 max-w-md">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-2 text-center text-sm text-gray-600 dark:text-gray-400"
+                className="space-y-3 text-center text-sm text-gray-600 dark:text-gray-400"
               >
-                <motion.p
+                <motion.div
+                  className="flex items-center justify-center space-x-2"
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  Analyzing your selected components...
-                </motion.p>
-                <motion.p
+                  <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+                  <p>Analyzing your selected components...</p>
+                </motion.div>
+                <motion.div
+                  className="flex items-center justify-center space-x-2"
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                 >
-                  Matching with your skill level and preferences...
-                </motion.p>
-                <motion.p
+                  <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
+                  <p>Matching with your skill level and preferences...</p>
+                </motion.div>
+                <motion.div
+                  className="flex items-center justify-center space-x-2"
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                 >
-                  Creating innovative project ideas...
-                </motion.p>
+                  <div className="w-3 h-3 bg-accent rounded-full animate-pulse" />
+                  <p>Creating innovative project ideas...</p>
+                </motion.div>
               </motion.div>
             </div>
           </div>
