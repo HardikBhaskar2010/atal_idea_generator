@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSpring, animated, config } from '@react-spring/web';
-import { useGesture } from 'react-use-gesture';
+import { useGesture } from '@use-gesture/react';
 
 const AnimatedCard = ({ 
   children, 
