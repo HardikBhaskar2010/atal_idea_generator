@@ -9,6 +9,42 @@ import ParticleBackground from '../components/common/ParticleBackground';
 const OnboardingFlow = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Enhanced background animation
+  const [backgroundSpring] = useSpring(() => ({
+    from: { 
+      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+    },
+    to: async (next) => {
+      while (true) {
+        await next({ 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+        });
+        await next({ 
+          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' 
+        });
+        await next({ 
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' 
+        });
+        await next({ 
+          background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' 
+        });
+        await next({ 
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' 
+        });
+      }
+    },
+    config: { duration: 8000 },
+  }));
+
+  // Floating elements animation
+  const [floatingSpring] = useSpring(() => ({
+    from: { transform: 'translateY(0px)' },
+    to: { transform: 'translateY(-20px)' },
+    config: config.slow,
+    loop: { reverse: true },
+  }));
 
   const onboardingData = [
     {
@@ -16,21 +52,24 @@ const OnboardingFlow = () => {
       description: 'Use your camera to scan QR codes and barcodes on electronic components. Instantly identify parts and add them to your project inventory.',
       icon: QrCode,
       color: 'text-primary',
-      bgColor: 'bg-primary/10',
+      bgColor: 'bg-gradient-to-br from-primary/10 to-primary/20',
+      particleColor: 'rgba(46, 125, 50, 0.3)',
     },
     {
       title: 'AI-Powered Ideas',
       description: 'Get creative project suggestions based on your available components. Our AI generates unique, feasible ideas tailored to your skill level.',
       icon: Brain,
       color: 'text-accent',
-      bgColor: 'bg-accent/10',
+      bgColor: 'bg-gradient-to-br from-accent/10 to-accent/20',
+      particleColor: 'rgba(255, 111, 0, 0.3)',
     },
     {
       title: 'Build Your Library',
       description: 'Save your favorite project ideas, export detailed reports, and share innovations with your team. Track your STEM learning journey.',
       icon: FolderHeart,
       color: 'text-secondary',
-      bgColor: 'bg-secondary/10',
+      bgColor: 'bg-gradient-to-br from-secondary/10 to-secondary/20',
+      particleColor: 'rgba(25, 118, 210, 0.3)',
     },
   ];
 
