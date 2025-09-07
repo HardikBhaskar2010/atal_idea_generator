@@ -35,33 +35,8 @@ function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             
-            {/* Toast notifications */}
-            <Toaster
-              position="bottom-center"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: '#363636',
-                  color: '#fff',
-                  borderRadius: '8px',
-                  padding: '12px 16px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                },
-                success: {
-                  iconTheme: {
-                    primary: '#4CAF50',
-                    secondary: '#fff',
-                  },
-                },
-                error: {
-                  iconTheme: {
-                    primary: '#F44336',
-                    secondary: '#fff',
-                  },
-                },
-              }}
-            />
+            {/* Enhanced toast notifications */}
+            <EnhancedToastProvider />
           </div>
         </Router>
       </UserProvider>
